@@ -1,15 +1,69 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>org.jetbrains.plugins.template</id>
-    <name>IntelliJ Platform Plugin Template</name>
-    <vendor>JetBrains</vendor>
+    <id>com.jeno.bracket-selection</id>
+    <name>Bracket Selection</name>
+    <vendor email="jenodekeyzer@gmail.com">Jeno</vendor>
+
+    <description><![CDATA[
+    <h3 id="bracketselection">Bracket Selection</h3>
+
+    <p>IntelliJ IDEA plugin for selecting content between brackets.</p>
+
+    <p>There are three possibilities:</p>
+
+    <ul>
+        <li>
+            Select everything from the first found opening brace to the matching closing brace (default mouse shortcut: <i>alt button1 doubleclick</i> or <i>hold alt -> double left click anywhere in between brackets</i> in human terms)<br/>
+            <img src="https://raw.githubusercontent.com/JenoDK/bracket-selection/master/documentation/select_brackets_all.gif" alt="Select all" width="400"/>
+        </li>
+
+        <li>
+            Select everything between single or double quotes (default mouse shortcut: alt button3 doubleclick, button1 is right click)<br/>
+            <img src="https://raw.githubusercontent.com/JenoDK/bracket-selection/master/documentation/select_quotes_all.gif" alt="Select all" width="400"/>
+        </li>
+        <li>
+            Select everything from the first found opening brace to current cursor (not bound by default)<br/>
+        </li>
+
+        <li>
+            Select everything from the current cursor to to the first found closing brace (not bound by default)<br/>
+        </li>
+    </ul>
+    ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="org.jetbrains.plugins.template.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="org.jetbrains.plugins.template.startup.MyProjectActivity" />
+        <applicationService serviceImplementation="com.jeno.settings.BracketSelectionSettings"/>
+        <applicationConfigurable instance="com.jeno.settings.BracketSelectionConfigurable" displayName="Bracket Selection"/>
     </extensions>
+
+    <actions>
+        <group id="BracketSelection.Plugin" text="Bracket Selection" description="Selects everything in between brackets/quotes">
+            <action id="BracketSelection.Plugin.Closing"
+                    class="com.jeno.ClosingBracketSelection"
+                    text="Closing Bracket Selection"
+                    description="Selects everything until the closing bracket">
+            </action>
+            <action id="BracketSelection.Plugin.Opening"
+                    class="com.jeno.OpeningBracketSelection"
+                    text="Opening Bracket Selection"
+                    description="Selects everything from the opening bracket to the caret">
+            </action>
+            <action id="BracketSelection.Plugin.All"
+                    class="com.jeno.AllBracketSelection"
+                    text="Complete Bracket Selection"
+                    description="Selects everything from the first opening bracket found to the closing bracket">
+                <mouse-shortcut keystroke="alt button1 doubleClick" keymap="$default"/>
+            </action>
+            <action id="QuotesSelection.Plugin"
+                    class="com.jeno.QuotesSelectionAction"
+                    text="Select Between Quotes"
+                    description="Selects everything between an opening and closing quote">
+                <mouse-shortcut keystroke="alt button3 doubleClick" keymap="$default"/>
+            </action>
+        </group>
+    </actions>
 </idea-plugin>
