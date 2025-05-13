@@ -33,8 +33,6 @@
 
     <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.jeno.settings.BracketSelectionSettings"/>
         <applicationConfigurable instance="com.jeno.settings.BracketSelectionConfigurable" displayName="Bracket Selection"/>
